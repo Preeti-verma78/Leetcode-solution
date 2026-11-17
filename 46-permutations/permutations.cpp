@@ -1,29 +1,25 @@
 class Solution {
 public:
-    vector<vector<int>>ans;
-    vector<int>path;
-    void sub(vector<int>&nums, vector<int>&used){
-        if(path.size() == nums.size()){
-            ans.push_back(path);
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>>result;
+        backtrack(nums, 0, result);
+        return result;
+        
+    }
+    void backtrack(vector<int>&nums, int idx, vector<vector<int>>&result){
+        if(idx == nums.size()){
+            result.push_back(nums);
             return;
         }
-        for(int i=0; i<nums.size(); i++){
-            if(used[i])continue;
-
-            path.push_back(nums[i]);
-            used[i] = 1;
-            sub(nums, used);
-            path.pop_back();
-            used[i]=0;
+        for(int i=idx; i<nums.size(); i++){
+            swap(nums[idx], nums[i]);
+            backtrack(nums, idx+1, result);
+            swap(nums[idx], nums[i]);
         }
     }
-    vector<vector<int>> permute(vector<int>& nums) {
-        
-        ans.clear();
-        path.clear();
-        vector<int>used(nums.size(), 0);
-        sub(nums,used);
-        return ans;
-        
+    void swap(int &a, int &b){
+        int temp =a;
+        a=b;
+        b=temp;
     }
 };
